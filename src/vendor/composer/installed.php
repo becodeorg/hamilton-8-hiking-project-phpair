@@ -1,6 +1,6 @@
 <?php return array(
     'root' => array(
-        'name' => 'vendor_name/src',
+        'name' => '__root__',
         'pretty_version' => '1.0.0+no-version-set',
         'version' => '1.0.0.0',
         'reference' => NULL,
@@ -10,7 +10,7 @@
         'dev' => true,
     ),
     'versions' => array(
-        'vendor_name/src' => array(
+        '__root__' => array(
             'pretty_version' => '1.0.0+no-version-set',
             'version' => '1.0.0.0',
             'reference' => NULL,

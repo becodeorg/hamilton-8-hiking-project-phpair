@@ -10,6 +10,7 @@ return array(
     'Composer\\Autoload\\ClassLoader' => $vendorDir . '/composer/ClassLoader.php',
     'Composer\\Autoload\\ComposerStaticInit773bbff176fb612bc0777c4da0c6be0d' => $vendorDir . '/composer/autoload_static.php',
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
+    'controllers\\PageController' => $baseDir . '/controllers/PageController.php',
     'controllers\\Router' => $baseDir . '/controllers/Router.php',
     'models\\Database' => $baseDir . '/models/Database.php',
 );
