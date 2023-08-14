@@ -14,7 +14,7 @@
     <nav>
         <ul>
             <li>
-                <a href="/">Worshop Classic Models</a>
+                <a href="/">Hikes</a>
             </li>
             <?php  if (empty($_SESSION)): ?>
                 <li>
