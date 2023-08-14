@@ -1,0 +1,20 @@
+{
+  "name": "vendor_name/src",
+  "autoload": {
+    "classmap": [
+      "./"
+    ]
+  },
+  "description": "description",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "PHPair",
+      "email": "email@example.com"
+    }
+  ],
+  "require": {
+    "ext-pdo": "*"
+  }
+}
