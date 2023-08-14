@@ -26,7 +26,7 @@ class Router
                 case "" :
                     $this->controller->index();
                     break;
-                case "product":
+                case "hike":
                     $this->controller->product();
                     break;
                 case "logout":
