@@ -9,8 +9,8 @@ echo 'It works !';
 
 $db = new Database();
 
-$result = $db->fetchAll("Select * FROM Users");
+$result = $db->fetch("Select * FROM Users");
 
 ?>
 
-<h1><?=$result[0] ?></h1>
+<h1><?=$result['firstname'] ?></h1>
