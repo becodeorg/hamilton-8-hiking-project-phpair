@@ -36,3 +36,4 @@ try {
     //$pageController = new PageController();
     //$pageController->page_500($e->getMessage()); need to change name and create the pages first
 }
+
