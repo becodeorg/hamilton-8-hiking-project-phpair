@@ -1,5 +1,4 @@
 {
-  "name": "vendor_name/src",
   "autoload": {
     "classmap": [
       "./"
