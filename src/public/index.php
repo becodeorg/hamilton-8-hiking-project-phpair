@@ -1,16 +1,20 @@
 <?php
 declare(strict_types=1);
 
+use Controllers\AuthController;
+use controllers\Router;
+
 require 'vendor/autoload.php';
 
-use models\Database;
+$AuthController = new AuthController();
 
-echo 'It works !';
+//$router = new Router(null,$AuthController);
+//
+//$router->start();
 
-$db = new Database();
+try {
+    $AuthController->login();
+} catch (Exception $e) {
+    echo $e;
+}
 
-$result = $db->fetchAll("Select * FROM Users");
-
-?>
-
-<h1><?=$result[0] ?></h1>
