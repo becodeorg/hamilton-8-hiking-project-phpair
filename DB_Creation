@@ -1,27 +1,8 @@
-create table Hikes
-(
-    id             int auto_increment
-        primary key,
-    name           varchar(255) null,
-    distance       varchar(255) null,
-    duration       varchar(255) null,
-    elevation_gain varchar(255) null,
-    description    varchar(255) null,
-    created_at     date         null,
-    updated_at     date         null
-);
-
 create table Tags
 (
     id   int auto_increment
         primary key,
     name varchar(255) null
-);
-
-create table TagsHikes
-(
-    id_Tag  int not null,
-    id_Hike int not null
 );
 
 create table Users
@@ -38,6 +19,46 @@ create table Users
     constraint UniqueNickname
         unique (nickname)
 );
+
+create table Hikes
+(
+    id             int auto_increment
+        primary key,
+    name           varchar(255) null,
+    distance       varchar(255) null,
+    duration       varchar(255) null,
+    elevation_gain varchar(255) null,
+    description    varchar(255) null,
+    created_at     date         null,
+    updated_at     date         null,
+    creator_id     int          not null,
+    constraint Hikes_Users_id_fk
+        foreign key (creator_id) references Users (id)
+);
+
+create table TagsHikes
+(
+    id_Tag  int not null,
+    id_Hike int not null,
+    constraint id_Hike
+        foreign key (id_Hike) references Hikes (id),
+    constraint id_Tag
+        foreign key (id_Tag) references Tags (id)
+);
+
+create table UserFavHike
+(
+    id_User int null,
+    id_Hike int null,
+    constraint UserFavHike_Hikes_id_fk
+        foreign key (id_Hike) references Hikes (id),
+    constraint id_User
+        foreign key (id_User) references Users (id)
+);
+
+
+
+
 
 INSERT INTO Hikes (id, name, distance, duration, elevation_gain, description, created_at, updated_at) VALUES (1, 'Boucle sentier des roches - Honneck - Schlucht', '6.8 mi', '5 hours 7 minutes', '1,627 ft', 'Très belle randonnée, ascension impressionnante mais vue imprenable au sommet qui vaut très largement l’effort.', '2023-08-14', '2023-08-14');
 INSERT INTO Hikes (id, name, distance, duration, elevation_gain, description, created_at, updated_at) VALUES (2, 'Chemin des cascades - secteur Cauterets', '5.43 mi', '3 à 4 heures', '1,493 ft', 'Au départ de la Raillère, ce sentier agréable longe le gave du Jeret et passe près de belles cascades, de plages de galets propices à la détente et de vasques aux eaux cristallines et rafraichissantes.', '2023-08-13', '2023-08-13');

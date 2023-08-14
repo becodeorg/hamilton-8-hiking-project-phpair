@@ -25,7 +25,7 @@
                 </li>
             <?php else: ?>
                 <li>
-                    <a href="/">Bonjour <?= $_SESSION['user']['username'] ?> </a>
+                    <a href="/">Bonjour <?= $_SESSION['user']['nickname'] ?> </a>
                 </li>
             <li>
                 <a href="logout">Logout</a>
