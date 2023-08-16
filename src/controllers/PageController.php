@@ -18,7 +18,29 @@ class PageController
 
         try {
 
-            $hikes = $this->db->fetchAll("SELECT * FROM Hikes LIMIT 20");
+            
+            $tags = $this->db->fetchAll('SELECT * FROM Tags');
+            
+
+            if(isset($_POST['hikesPerTag'])){
+                $tag=$_POST['hikesPerTag'];
+                $hikes = $this->db->prepareAll("
+                SELECT *, Hikes.name
+                FROM Hikes 
+                JOIN Users ON Hikes.creator_id = Users.id
+                JOIN TagsHikes ON Hikes.id = TagsHikes.id_Hike
+                JOIN Tags ON Tags.id = TagsHikes.id_Tag
+                WHERE Tags.id = ?", [$tag]);
+            }
+            else{
+                $hikes = $this->db->fetchAll("
+                SELECT * 
+                FROM Hikes 
+                JOIN Users ON Hikes.creator_id = Users.id
+                LIMIT 20");
+            }
+
+
 
             include 'views/inc/header.view.php';
             include 'views/index.view.php';
@@ -48,9 +70,9 @@ class PageController
 
     public function errorPage($e, $errorCode){
 
-        include 'views/layout/header.view.php';
-        include 'views/layout/errorPage.view.php';
-        include 'views/layout/footer.view.php';
+        include 'views/inc/header.view.php';
+        include 'views/inc/errorPage.view.php';
+        include 'views/inc/footer.view.php';
 
 
     }
