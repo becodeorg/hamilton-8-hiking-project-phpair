@@ -26,8 +26,8 @@ class Router
                 case "" :
                     $this->controller->index();
                     break;
-                case "product":
-                    $this->controller->product();
+                case "hike":
+                    $this->controller->hike();
                     break;
                 case "logout":
                     $this->Auth->logout();
@@ -38,13 +38,20 @@ class Router
                 case "login":
                     $this->Auth->login();
                     break;
+                case "error":
+                    $this->controller->errorPage("error","500");
+                    break;
+                case "profile":
+                    $this->Auth->profile();
+                    break;
                 default:
                     $this->controller->errorPage("Page Introuvable","404");
                     break;
             }
 
         }catch (Exception $e){
-            $this->controller->errorPage("une erreur est survenue,revenez plus tard","500");
+
+            $this->controller->errorPage($e->getMessage(),$e->getCode());
         }
     }
 

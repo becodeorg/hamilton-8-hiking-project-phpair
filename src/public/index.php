@@ -3,14 +3,12 @@ declare(strict_types=1);
 
 require 'vendor/autoload.php';
 
-use models\Database;
+use controllers\AuthController;
+use controllers\PageController;
+use controllers\Router;
 
-echo 'It works !';
 
-$db = new Database();
-
-$result = $db->fetchAll("Select * FROM Users");
-
-?>
-
-<h1><?=$result[0] ?></h1>
+$controller = new PageController();
+$AuthController = new AuthController();
+$router = new Router($controller,$AuthController);
+$router->start();

@@ -14,7 +14,7 @@
     <nav>
         <ul>
             <li>
-                <a href="/">Worshop Classic Models</a>
+                <a href="/">Hikes</a>
             </li>
             <?php  if (empty($_SESSION)): ?>
                 <li>
@@ -25,7 +25,7 @@
                 </li>
             <?php else: ?>
                 <li>
-                    <a href="/">Bonjour <?= $_SESSION['user']['username'] ?> </a>
+                    <a href="./profile">Bonjour <?= $_SESSION['user']['nickname'] ?> </a>
                 </li>
             <li>
                 <a href="logout">Logout</a>
