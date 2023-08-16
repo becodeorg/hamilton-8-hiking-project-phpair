@@ -48,6 +48,17 @@ class AuthController
                     'email' => $email
                 ];
 
+
+                $to = $email;
+                $subject = 'Confirmation d\'ínscription ';
+                $message = 'Vous êtes bien inscrit sur The Hike';
+                $headers = 'From: TheHike@hotmail.com' . "\r\n" .
+                    'Reply-To: TheHike@hotmail.com' . "\r\n" .
+                    'X-Mailer: PHP/' . phpversion();
+
+                mail($to, $subject, $message, $headers);
+
+
                 header('location: /');
 
 
@@ -114,6 +125,8 @@ class AuthController
             include 'views/profile.view.php';
             include 'views/inc/footer.view.php';
 
+            
+
             if(!empty($_POST) && $_POST['action'] == 'Update') {
                 if ( !empty($_POST['firstname']) && !empty($_POST['lastname']) && !empty($_POST['nickname']) && !empty($_POST['email']) && !empty($_POST['password'])) {
 
@@ -137,8 +150,6 @@ class AuthController
                     throw new Exception("un ou plusieurs champs sont vides", 500);
                 }
             }
-
-
             if(!empty($_POST)) {
                 if ($_POST['action'] == 'Delete') {
                    $this->db->fetch('DELETE FROM Users WHERE id = '.$_SESSION['user']['id'].' ;');
