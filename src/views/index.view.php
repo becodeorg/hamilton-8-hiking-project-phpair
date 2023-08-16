@@ -4,9 +4,9 @@
     
     <h3>See hikes per tag</h3>
 
-    <form method="POST" action="" onchange="this.form.submit()">
+    <form method="POST" action="" >
 
-        <select name="hikesPerTag" id="hikesPerTag" value="<?=$_POST['hikesPerTag']?>">
+        <select name="hikesPerTag" id="hikesPerTag">
             <?php foreach($tags as $tag):  ?>
                 <option value="<?=$tag['id']?>" <?php if($_POST['hikesPerTag'] == $tag['id']){echo("selected");}?>>
                     <?=$tag['name']?>
