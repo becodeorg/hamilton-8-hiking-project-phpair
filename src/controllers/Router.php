@@ -38,6 +38,9 @@ class Router
                 case "login":
                     $this->Auth->login();
                     break;
+                case "error":
+                    $this->controller->errorPage("error","500");
+                    break;
                 case "profile":
                     $this->Auth->profile();
                     break;
@@ -47,6 +50,7 @@ class Router
             }
 
         }catch (Exception $e){
+
             $this->controller->errorPage($e->getMessage(),"500");
         }
     }
