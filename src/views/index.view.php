@@ -14,13 +14,21 @@
             <?php endforeach?>
         </select>
         <input type="submit" name="submit">
+
     </form>
+    <?php 
+        header("Cache-Control: no cache");
+
+        session_cache_limiter("private_no_expire");
+    ?>
+
 <?php endif;?>
 
 
 <?php if (!empty($hikes)): ?>
     <table>
         <tr>
+            <th>Favorite</th>
             <th>Name</th>
             <th>Distance</th>
             <th>Duration</th>
@@ -36,7 +44,11 @@
         <?php foreach($hikes as $hike): ?>
             <tr>
                 <td>
-                    <a href="/hike?id=<?= $hike['id'] ?>">
+                    <label><input type="checkbox"><span class="label"></span></label>
+                    <!-- <form action="" method="post"> </form>   -->
+                </td>
+                <td>
+                    <a href="/hike?id=<?php if(isset($_POST['hikesPerTag'])){echo $hike['id_Hike'];} else {echo $hike['id'];}?>">
                         <?= $hike['name'] ?>
                     </a>
                 </td>

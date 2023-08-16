@@ -24,7 +24,7 @@ class PageController
             if(isset($_POST['hikesPerTag'])){
                 $tag=$_POST['hikesPerTag'];
                 $hikes = $this->db->prepareAll("
-                SELECT *, Hikes.name
+                SELECT *, Hikes.name, Tags.id AS tagsId, TagsHikes.id_tag AS tagshikesid
                 FROM Hikes 
                 JOIN Users ON Hikes.creator_id = Users.id
                     
@@ -77,7 +77,6 @@ class PageController
                     H.id
                 ");
             }
-
 
 
             include 'views/inc/header.view.php';
