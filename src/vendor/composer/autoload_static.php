@@ -11,6 +11,7 @@ class ComposerStaticInit773bbff176fb612bc0777c4da0c6be0d
         'Composer\\Autoload\\ClassLoader' => __DIR__ . '/..' . '/composer/ClassLoader.php',
         'Composer\\Autoload\\ComposerStaticInit773bbff176fb612bc0777c4da0c6be0d' => __DIR__ . '/..' . '/composer/autoload_static.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'controllers\\AuthController' => __DIR__ . '/../..' . '/controllers/AuthController.php',
         'controllers\\PageController' => __DIR__ . '/../..' . '/controllers/PageController.php',
         'controllers\\Router' => __DIR__ . '/../..' . '/controllers/Router.php',
         'models\\Database' => __DIR__ . '/../..' . '/models/Database.php',
