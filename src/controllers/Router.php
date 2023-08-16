@@ -51,7 +51,7 @@ class Router
 
         }catch (Exception $e){
 
-            $this->controller->errorPage($e->getMessage(),"500");
+            $this->controller->errorPage($e->getMessage(),$e->getCode());
         }
     }
 
