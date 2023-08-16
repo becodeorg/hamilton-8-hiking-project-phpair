@@ -17,7 +17,6 @@ class PageController
     public function index(){
 
         try {
-
             
             $tags = $this->db->fetchAll('SELECT * FROM Tags');
             
@@ -28,6 +27,7 @@ class PageController
                 SELECT *, Hikes.name
                 FROM Hikes 
                 JOIN Users ON Hikes.creator_id = Users.id
+                    
                 JOIN TagsHikes ON Hikes.id = TagsHikes.id_Hike
                 JOIN Tags ON Tags.id = TagsHikes.id_Tag
                 WHERE Tags.id = ?", [$tag]);
