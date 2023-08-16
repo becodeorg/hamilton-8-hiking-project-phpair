@@ -106,6 +106,53 @@ class AuthController
 
     }
 
+    public function profile(){
+
+        if (!empty($_SESSION['user'])) {
+
+            include 'views/inc/header.view.php';
+            include 'views/profile.view.php';
+            include 'views/inc/footer.view.php';
+
+            if(!empty($_POST) && $_POST['action'] == 'Update') {
+                if ( !empty($_POST['firstname']) && !empty($_POST['lastname']) && !empty($_POST['nickname']) && !empty($_POST['email']) && !empty($_POST['password'])) {
+
+                    $passwordHash = password_hash($_POST['password'], PASSWORD_DEFAULT);
+                    $id = $_SESSION['user']['id'];
+
+
+                    $this->db->prepare("UPDATE Users SET firstname = ?, lastname = ?, nickname = ?, email = ?,password = ? WHERE id = ?;", [$_POST['firstname'], $_POST['lastname'], $_POST['nickname'], $_POST['email'], $passwordHash, $id]);
+
+                    $_SESSION['user'] = [
+                        'id' => $id,
+                        'firstname' => $_POST['firstname'],
+                        'lastname' => $_POST['lastname'],
+                        'nickname' => $_POST['nickname'],
+                        'email' => $_POST['email']
+                    ];
+                    header("location: /profile");
+
+
+                } else {
+                    throw new Exception("un ou plusieurs champs sont vides", 500);
+                }
+            }
+
+
+            if(!empty($_POST)) {
+                if ($_POST['action'] == 'Delete') {
+                   $this->db->fetch('DELETE FROM Users WHERE id = '.$_SESSION['user']['id'].' ;');
+                   $this->logout();
+                    header("location: /");
+                }
+            }
+
+        }else{
+            header('Location: /login');
+        }
+
+    }
+
     public function logout(){
         session_destroy();
         header('Location: /');

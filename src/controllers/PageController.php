@@ -48,9 +48,9 @@ class PageController
 
     public function errorPage($e, $errorCode){
 
-        include 'views/layout/header.view.php';
-        include 'views/layout/errorPage.view.php';
-        include 'views/layout/footer.view.php';
+        include 'views/inc/header.view.php';
+        include 'views/inc/errorPage.view.php';
+        include 'views/inc/footer.view.php';
 
 
     }
