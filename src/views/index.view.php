@@ -60,9 +60,7 @@
                 <td><?= $hike['nickname'] ?></td>  
 
                 <?php if (!empty($tagsIndex)):?>
-                
                         <?php foreach($tagsIndex as $tagIndex):?>
-                            
                             <?php if ($hike['id']== $tagIndex["Hike"]):?>
                                 <td><?=$tagIndex['name']?></td>
                             <?php endif ?>
