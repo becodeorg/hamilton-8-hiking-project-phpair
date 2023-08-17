@@ -3,15 +3,15 @@
 namespace controllers;
 
 use Exception;
-use models\Database;
+use models\Users;
 
 class AuthController
 {
 
-    private $db;
+    private Users $User;
 
     public function __construct(){
-        $this->db = new Database();
+        $this->User = new Users();
         session_start();
     }
 
@@ -38,15 +38,26 @@ class AuthController
                 $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
                 $passwordHash = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
-                $this->db->prepare("INSERT INTO Users (firstname, lastname, nickname, email,password) VALUES (?, ?, ?,?,?)", [$firstname,$lastname,$nickname, $email, $passwordHash]);
+                $this->User->add($firstname,$lastname,$nickname, $email, $passwordHash);
 
                 $_SESSION['user'] = [
-                    'id' => $this->db->lastInsertId(),
+                    'id' => $this->User->lastInsertId(),
                     'firstname' => $firstname,
                     'lastname' => $lastname,
                     'nickname' => $nickname,
                     'email' => $email
                 ];
+
+
+                $to = $email;
+                $subject = 'Confirmation d\'ínscription ';
+                $message = 'Vous êtes bien inscrit sur The Hike';
+                $headers = 'From: manon.vdm@hotmail.com' . "\r\n" .
+                    'Reply-To: manon.vdm@hotmail.com' . "\r\n" .
+                    'X-Mailer: PHP/' . phpversion();
+
+                mail($to, $subject, $message, $headers);
+
 
                 header('location: /');
 
@@ -78,7 +89,7 @@ class AuthController
 
                 $nickname = htmlspecialchars($_POST['nickname']);
 
-                $user = $this->db->prepare("SELECT * FROM Users WHERE nickname = ?", [$nickname]);
+                $user = $this->User->get($nickname);
 
 
                 if (password_verify($_POST['password'], $user['password'])) {
@@ -109,19 +120,26 @@ class AuthController
     public function profile(){
 
         if (!empty($_SESSION['user'])) {
+            $id = $_SESSION['user']['id'];
+
+            $favHikes = $this->User->getFavHikes($id);
+            $hikesCreated = $this->User->getHikesCreated($id);
+
 
             include 'views/inc/header.view.php';
             include 'views/profile.view.php';
             include 'views/inc/footer.view.php';
 
+
+
             if(!empty($_POST) && $_POST['action'] == 'Update') {
                 if ( !empty($_POST['firstname']) && !empty($_POST['lastname']) && !empty($_POST['nickname']) && !empty($_POST['email']) && !empty($_POST['password'])) {
 
                     $passwordHash = password_hash($_POST['password'], PASSWORD_DEFAULT);
-                    $id = $_SESSION['user']['id'];
 
 
-                    $this->db->prepare("UPDATE Users SET firstname = ?, lastname = ?, nickname = ?, email = ?,password = ? WHERE id = ?;", [$_POST['firstname'], $_POST['lastname'], $_POST['nickname'], $_POST['email'], $passwordHash, $id]);
+
+                    $this->User->modify($id,$_POST['firstname'], $_POST['lastname'], $_POST['nickname'], $_POST['email'], $passwordHash);
 
                     $_SESSION['user'] = [
                         'id' => $id,
@@ -137,13 +155,11 @@ class AuthController
                     throw new Exception("un ou plusieurs champs sont vides", 500);
                 }
             }
-
-
             if(!empty($_POST)) {
                 if ($_POST['action'] == 'Delete') {
-                   $this->db->fetch('DELETE FROM Users WHERE id = '.$_SESSION['user']['id'].' ;');
+                   $this->User->remove($_SESSION['user']['id']);
                    $this->logout();
-                    header("location: /");
+                   header("location: /");
                 }
             }
 
