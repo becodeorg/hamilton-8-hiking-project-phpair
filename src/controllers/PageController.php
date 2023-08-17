@@ -28,6 +28,12 @@ class PageController
                 $hikes = $this->hike->getListHikes();
                 $tagsIndex=$this->hike->getListTags();
             }
+            if(isset($_GET['hikeid'])){
+                $this->hike->addToFav($_GET['hikeid'], $_SESSION['user']['id']);
+            }
+            
+            $favHike=$this->hike->getFavHikes($_SESSION['user']['id']);
+            
 
             include 'views/inc/header.view.php';
             include 'views/index.view.php';
