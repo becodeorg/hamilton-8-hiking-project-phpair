@@ -120,6 +120,11 @@ class AuthController
     public function profile(){
 
         if (!empty($_SESSION['user'])) {
+            $id = $_SESSION['user']['id'];
+
+            $favHikes = $this->User->getFavHikes($id);
+            $hikesCreated = $this->User->getHikesCreated($id);
+
 
             include 'views/inc/header.view.php';
             include 'views/profile.view.php';
@@ -131,7 +136,7 @@ class AuthController
                 if ( !empty($_POST['firstname']) && !empty($_POST['lastname']) && !empty($_POST['nickname']) && !empty($_POST['email']) && !empty($_POST['password'])) {
 
                     $passwordHash = password_hash($_POST['password'], PASSWORD_DEFAULT);
-                    $id = $_SESSION['user']['id'];
+
 
 
                     $this->User->modify($id,$_POST['firstname'], $_POST['lastname'], $_POST['nickname'], $_POST['email'], $passwordHash);

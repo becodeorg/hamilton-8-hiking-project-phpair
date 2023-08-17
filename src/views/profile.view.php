@@ -12,10 +12,10 @@
         <th>Tags</th>
     </tr>
 
-    <?php foreach($hikes as $hike):  ?>
+    <?php foreach($hikesCreated as $hike):  ?>
         <tr>
             <td>
-                <a href="/hike?id=<?= $hike['id'] ?>">
+                <a href="/hike?id=<?= $hike['HikeId'] ?>">
                     <?= $hike['name'] ?>
                 </a>
             </td>
@@ -53,10 +53,10 @@
         <th>Tags</th>
     </tr>
 
-    <?php foreach($hikesFav as $hikeFav):  ?>
+    <?php foreach($favHikes as $hikeFav):  ?>
         <tr>
             <td>
-                <a href="/hike?id=<?= $hikeFav['id'] ?>">
+                <a href="/hike?id=<?= $hikeFav['HikeId'] ?>">
                     <?= $hikeFav['name'] ?>
                 </a>
             </td>
