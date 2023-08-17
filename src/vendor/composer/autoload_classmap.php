@@ -14,4 +14,5 @@ return array(
     'controllers\\PageController' => $baseDir . '/controllers/PageController.php',
     'controllers\\Router' => $baseDir . '/controllers/Router.php',
     'models\\Database' => $baseDir . '/models/Database.php',
+    'models\\Hikes' => $baseDir . '/models/Hikes.php',
 );

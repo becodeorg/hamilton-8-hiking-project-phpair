@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.classless.min.css">
+    <script src="https://kit.fontawesome.com/81858c777b.js" crossorigin="anonymous"></script>
 </head>
 <body>
 <header>
