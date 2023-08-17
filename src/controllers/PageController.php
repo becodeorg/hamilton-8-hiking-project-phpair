@@ -4,80 +4,30 @@ namespace controllers;
 
 use models\Database;
 use Exception;
+use models\Hikes;
 
 class PageController
 {
-    private $db;
-
+    private $hike;
     public function __construct(){
-        $this->db = new Database();
         session_start();
+        $this->hike = (new Hikes());
     }
 
     public function index(){
 
         try {
-            
-            $tags = $this->db->fetchAll('SELECT * FROM Tags');
+            $tags=$this->hike->selectAllTags();
             
 
             if(isset($_POST['hikesPerTag'])){
                 $tag=$_POST['hikesPerTag'];
-                $hikes = $this->db->prepareAll("
-                SELECT *, Hikes.name, Tags.id AS tagsId, TagsHikes.id_tag AS tagshikesid
-                FROM Hikes 
-                JOIN Users ON Hikes.creator_id = Users.id
-                    
-                JOIN TagsHikes ON Hikes.id = TagsHikes.id_Hike
-                JOIN Tags ON Tags.id = TagsHikes.id_Tag
-                WHERE Tags.id = ?", [$tag]);
+                $hikes = $this->hike->getHikesByTag($tag);
             }
             else{
-                $hikes = $this->db->fetchAll("
-                SELECT 
-                    Hikes.id,
-                    Hikes.name, 
-                    Hikes.distance, 
-                    Hikes.duration,
-                    Hikes.elevation_gain,
-                    Hikes.created_at,
-                    Hikes.updated_at,
-                    Users.nickname,
-                    Hikes.creator_id AS creatorId
-                
-                FROM Hikes 
-                JOIN Users ON Hikes.creator_id = Users.id
-                JOIN TagsHikes ON Hikes.id = TagsHikes.id_Hike
-                JOIN Tags ON Tags.id = TagsHikes.id_Tag
-                GROUP BY 
-                    Hikes.name, 
-                    Hikes.distance, 
-                    Hikes.duration,
-                    Hikes.elevation_gain,
-                    Hikes.id, 
-                    Hikes.created_at,
-                    Hikes.updated_at,
-                    Users.nickname,
-                    creatorId
-                    
-                LIMIT 20
-               ");
-                $tagsIndex = $this->db->fetchAll("
-                select 
-                    Tags.name,
-                    id_Hike as Hike,
-                    H.id
-                from Tags
-                join TagsHikes TH on Tags.id = TH.id_Tag
-                join Hikes H on H.id = TH.id_Hike
-                WHERE TH.id_Hike = H.id
-                GROUP BY 
-                    Tags.name,
-                    Hike,
-                    H.id
-                ");
+                $hikes = $this->hike->getListHikes();
+                $tagsIndex=$this->hike->getListTags();
             }
-
 
             include 'views/inc/header.view.php';
             include 'views/index.view.php';
@@ -92,7 +42,7 @@ class PageController
 
         try {
 
-            $hike = $this->db->prepare("SELECT * FROM Hikes WHERE id = ?",[$_GET['id']]);
+            $hike = $this->hike->getHikesById([$_GET['id']]);
             //includes
             include 'views/inc/header.view.php';
             include 'views/hike.view.php';
