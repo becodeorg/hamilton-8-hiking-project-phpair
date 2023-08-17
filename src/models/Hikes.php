@@ -59,7 +59,7 @@ class Hikes extends Database{
             from Tags
             join TagsHikes TH on Tags.id = TH.id_Tag
             join Hikes H on H.id = TH.id_Hike
-            WHERE TH.id_Hike = H.id
+
             GROUP BY 
                 Tags.name,
                 Hike,
@@ -78,9 +78,30 @@ class Hikes extends Database{
     }
 
     public function getHikesCreated($id){
-        return $this->prepareAll('SELECT *,Hikes.id as HikeId From Hikes
-                                        join Users U on U.id = Hikes.creator_id
-                                        where U.id = ?',[$id]);
+        return $this->prepareAll('SELECT * From Hikes
+            join Users U on U.id = Hikes.creator_id
+            where U.id = ?',[$id]);
+    }
+    public function addToFav($hikeid, $userid){
+        
+        $result=$this->prepareAll("Select * from UserFavHike Where id_User=? AND id_Hike=?",[$userid,$hikeid]);
+        if(empty($result)){
+            $this->prepare(
+                "
+                    INSERT INTO UserFavHike (id_User, id_Hike) 
+                    VALUES (?, ?)
+                ",
+                [$userid,$hikeid]
+            );
+        }else{
+            $this->prepare(
+                "
+                    DELETE FROM UserFavHike WHERE id_User=? AND id_Hike=?",
+                [$userid,$hikeid]
+            );
+        }
+
+
     }
 
     

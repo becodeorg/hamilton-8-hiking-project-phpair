@@ -43,10 +43,34 @@
 
         <?php foreach($hikes as $hike): ?>
             <tr>
-                <td>
-                    <label><input type="checkbox"><span class="label"></span></label>
-                    <!-- <form action="" method="post"> </form>   -->
-                </td>
+                <?php if ($_SESSION['user']):?>
+                    <td>
+                        
+                        
+                        <?php 
+                            $check = false;
+
+                            foreach($favHike as $fav){
+                                if($hike['id'] == $fav['id_Hike']){
+                                    $check = true;
+                                }
+                            }
+                        ?>
+
+                            
+                            <?php if($check):?>
+                                <input id='<?=$hike['id']?>' type='checkbox' onclick="location.href='/?hikeid=<?=$hike['id']?>'" checked>
+                            <?php else :?>
+                                <input id='<?=$hike['id']?>' type='checkbox' onclick="location.href='/?hikeid=<?=$hike['id']?>'">
+                
+                            <?php $check=false?>
+                            <?php endif ?>
+
+                            
+                        
+                        
+                    </td>
+                <?php endif ?>
                 <td>
                     <a href="/hike?id=<?php if(isset($_POST['hikesPerTag'])){echo $hike['id_Hike'];} else {echo $hike['id'];}?>">
                         <?= $hike['name'] ?>
