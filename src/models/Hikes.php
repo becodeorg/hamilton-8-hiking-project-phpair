@@ -11,7 +11,7 @@ class Hikes extends Database{
     
     public function getHikesByTag(string $tag){
         return $this->prepareAll("
-                SELECT *, Hikes.name, Tags.id AS tagsId, TagsHikes.id_tag AS tagshikesid
+                SELECT *,Hikes.id AS idhike, Hikes.name, Tags.id AS tagsId, TagsHikes.id_tag AS tagshikesid
                 FROM Hikes 
                 JOIN Users ON Hikes.creator_id = Users.id
                     
