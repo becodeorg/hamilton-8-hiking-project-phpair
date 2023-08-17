@@ -28,7 +28,7 @@
 
             <?php if (!empty($tagsIndex)):?>
                 <?php foreach($tagsIndex as $tagIndex):?>
-                    <?php if ($hike['id']== $tagIndex["Hike"]):?>
+                    <?php if ($hike['HikeId']== $tagIndex["Hike"]):?>
                         <td><?=$tagIndex['name']?></td>
                     <?php endif ?>
                 <?php endforeach?>
@@ -69,7 +69,7 @@
 
             <?php if (!empty($tagsIndex)):?>
                 <?php foreach($tagsIndex as $tagIndex):?>
-                    <?php if ($hikeFav['id']== $tagIndex["Hike"]):?>
+                    <?php if ($hikeFav['HikeId']== $tagIndex["Hike"]):?>
                         <td><?=$tagIndex['name']?></td>
                     <?php endif ?>
                 <?php endforeach?>
