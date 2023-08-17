@@ -71,17 +71,17 @@ class Hikes extends Database{
     }
     public function getFavHikes($id){
 
-        return $this->prepareAll('SELECT * From Hikes 
-            join UserFavHike UFH on Hikes.id = UFH.id_Hike 
-            join Users U on U.id = UFH.id_User
-            where U.id = ?',[$id]);
+        return $this->prepareAll('SELECT *,Hikes.id as HikeId  From Hikes 
+                                        join UserFavHike UFH on Hikes.id = UFH.id_Hike 
+                                        join Users U on U.id = UFH.id_User
+                                        where U.id = ?',[$id]);
     }
 
     public function getHikesCreated($id){
-        return $this->prepareAll('SELECT * From Hikes
-            join Users U on U.id = Hikes.creator_id
-            where U.id = ?',[$id]);
-}
+        return $this->prepareAll('SELECT *,Hikes.id as HikeId From Hikes
+                                        join Users U on U.id = Hikes.creator_id
+                                        where U.id = ?',[$id]);
+    }
 
     
 }

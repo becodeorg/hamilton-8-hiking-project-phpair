@@ -3,15 +3,18 @@
 namespace controllers;
 
 use Exception;
+use models\Hikes;
 use models\Users;
 
 class AuthController
 {
 
     private Users $User;
+    private Hikes $hikes;
 
     public function __construct(){
         $this->User = new Users();
+        $this->hikes = new Hikes();
         session_start();
     }
 
@@ -122,9 +125,10 @@ class AuthController
         if (!empty($_SESSION['user'])) {
             $id = $_SESSION['user']['id'];
 
-            $favHikes = $this->User->getFavHikes($id);
-            $hikesCreated = $this->User->getHikesCreated($id);
-
+            $favHikes = $this->hikes->getFavHikes($id);
+            $hikesCreated = $this->hikes->getHikesCreated($id);
+            $hikes = $this->hikes->getListHikes();
+            $tagsIndex = $this->hikes->getListTags();
 
             include 'views/inc/header.view.php';
             include 'views/profile.view.php';
