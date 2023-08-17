@@ -69,5 +69,19 @@ class Hikes extends Database{
     public function getHikesById(array $var){
         return $this->prepare("SELECT * FROM Hikes WHERE id = ?",$var);
     }
+    public function getFavHikes($id){
+
+        return $this->prepareAll('SELECT * From Hikes 
+            join UserFavHike UFH on Hikes.id = UFH.id_Hike 
+            join Users U on U.id = UFH.id_User
+            where U.id = ?',[$id]);
+    }
+
+    public function getHikesCreated($id){
+        return $this->prepareAll('SELECT * From Hikes
+            join Users U on U.id = Hikes.creator_id
+            where U.id = ?',[$id]);
+}
+
     
 }
