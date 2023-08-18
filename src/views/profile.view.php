@@ -1,5 +1,5 @@
 
-<h2>My Hikes</h2>
+<h2>My Hikes</h2><button>Create a new Hike</button>
 <table>
     <tr>
         <th>Name</th>
@@ -15,7 +15,7 @@
     <?php foreach($hikesCreated as $hike):  ?>
         <tr>
             <td>
-                <a href="/hike?id=<?= $hike['HikeId'] ?>">
+                <a href="/hike?id=<?= $hike['hikeID'] ?>">
                     <?= $hike['name'] ?>
                 </a>
             </td>
@@ -28,7 +28,7 @@
 
             <?php if (!empty($tagsIndex)):?>
                 <?php foreach($tagsIndex as $tagIndex):?>
-                    <?php if ($hike['HikeId']== $tagIndex["Hike"]):?>
+                    <?php if ($hike['hikeID']== $tagIndex["Hike"]):?>
                         <td><?=$tagIndex['name']?></td>
                     <?php endif ?>
                 <?php endforeach?>

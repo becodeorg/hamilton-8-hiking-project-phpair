@@ -29,6 +29,9 @@
                 <li>
                     <a href="./profile">Bonjour <?= $_SESSION['user']['nickname'] ?> </a>
                 </li>
+                <li>
+                    <button>Create a new Hike</button>
+                </li>
             <li>
                 <a href="logout">Logout</a>
             </li>

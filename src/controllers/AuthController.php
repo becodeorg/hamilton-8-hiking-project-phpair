@@ -141,6 +141,7 @@ class AuthController
 
         if (!empty($_SESSION['user'])) {
             $id = $_SESSION['user']['id'];
+            $tagsIndex=$this->hikes->getListTags();
 
             if($_SESSION['user']['isAdmin']){
                 $users = $this->User->getAll();
