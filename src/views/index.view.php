@@ -28,7 +28,9 @@
 <?php if (!empty($hikes)): ?>
     <table>
         <tr>
-            <th>Favorite</th>
+            <?php if ($_SESSION['user']):?>
+                <th>Favorite</th>
+            <?php endif ?>
             <th>Name</th>
             <th>Distance</th>
             <th>Duration</th>
@@ -51,7 +53,7 @@
                             $check = false;
                             
                             foreach($favHike as $fav){
-                                if($hike['idhike'] == $fav['HikeId']){
+                                if($hike['id'] == $fav['HikeId']){
                                     $check = true;
                                 }
                             }
@@ -59,9 +61,9 @@
 
                             
                             <?php if($check):?>
-                                <input id='<?=$hike['idhike']?>' type='checkbox' onclick="location.href='/?hikeid=<?=$hike['idhike']?>'" checked>
+                                <input id='<?=$hike['id']?>' type='checkbox' onclick="location.href='/?hikeid=<?=$hike['id']?>'" checked>
                             <?php else :?>
-                                <input id='<?=$hike['idhike']?>' type='checkbox' onclick="location.href='/?hikeid=<?=$hike['idhike']?>'">
+                                <input id='<?=$hike['id']?>' type='checkbox' onclick="location.href='/?hikeid=<?=$hike['id']?>'">
                 
                             <?php endif ?>
 
