@@ -66,7 +66,7 @@ class Hikes extends Database{
                 H.id
         ");
     }
-    public function getHikesById(array $var){
+    public function getHikesById($var){
         return $this->prepare("SELECT * FROM Hikes WHERE id = ?",$var);
     }
     public function getFavHikes($id){
@@ -104,5 +104,11 @@ class Hikes extends Database{
 
     }
 
-    
+    public function editH($name,$distance,$duration,$elevation,$description,$updated, $id){
+        return $this->prepare("UPDATE Hikes SET name = ?, distance = ?, duration = ?, elevation_gain = ?,description = ?, updated_at=? WHERE id = ?;", [$name,$distance,$duration,$elevation,$description,$updated,$id]);
+
+    }
+    public function deleteH($hikeid){
+        return $this->prepare("DELETE FROM Hikes WHERE id =  ?",[$hikeid]);
+    }
 }

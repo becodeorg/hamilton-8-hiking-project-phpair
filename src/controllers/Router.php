@@ -44,6 +44,8 @@ class Router
                 case "profile":
                     $this->Auth->profile();
                     break;
+                case "editHike":
+                    $this->controller->editHike();
                 default:
                     $this->controller->errorPage("Page Introuvable","404");
                     break;
