@@ -104,5 +104,15 @@ class Hikes extends Database{
 
     }
 
-    
+    public function removeTag(int $supTag)
+    {
+        $this->prepare("DELETE FROM Tags WHERE id=? ",[$supTag]);
+    }
+
+    public function getAllTags()
+    {
+        return $this->fetchAll("SELECT * FROM Tags");
+    }
+
+
 }
