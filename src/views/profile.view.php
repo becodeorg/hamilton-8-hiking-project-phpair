@@ -1,5 +1,5 @@
 
-<h2>My Hikes</h2>
+<h2>My Hikes</h2><button>Create a new Hike</button>
 <table>
     <tr>
         <th>Name</th>
@@ -15,7 +15,7 @@
     <?php foreach($hikesCreated as $hike):  ?>
         <tr>
             <td>
-                <a href="/hike?id=<?= $hike['HikeId'] ?>">
+                <a href="/hike?id=<?= $hike['hikeID'] ?>">
                     <?= $hike['name'] ?>
                 </a>
             </td>
@@ -28,7 +28,7 @@
 
             <?php if (!empty($tagsIndex)):?>
                 <?php foreach($tagsIndex as $tagIndex):?>
-                    <?php if ($hike['HikeId']== $tagIndex["Hike"]):?>
+                    <?php if ($hike['hikeID']== $tagIndex["Hike"]):?>
                         <td><?=$tagIndex['name']?></td>
                     <?php endif ?>
                 <?php endforeach?>
@@ -40,9 +40,58 @@
     <?php endforeach?>
 </table>
 
+<?php if($_SESSION['user']['isAdmin']): ?>
+
+<h2>Users</h2>
+<table>
+    <tr>
+        <th></th>
+        <th>firstname</th>
+        <th>lastname</th>
+        <th>nickname</th>
+        <th>email</th>
+    </tr>
+    <?php foreach($users as $user):  ?>
+
+        <tr>
+            <td><a href="/profile?supUser=<?= $user['id'] ?>"><i class="fa-regular fa-trash-can" style="color: #ff0000;"></i></a></td>
+            <td><?= $user['firstname'] ?></td>
+            <td><?= $user['lastname'] ?></td>
+            <td><?= $user['nickname'] ?></td>
+            <td><?= $user['email'] ?></td>
+
+        </tr>
+
+    <?php endforeach; ?>
+</table>
+
+    <h2>Tags</h2>
+    <table>
+        <tr>
+            <th></th>
+            <th>name</th>
+        </tr>
+        <?php foreach($tags as $tag):  ?>
+
+            <tr>
+                <td><a href="/profile?supTag=<?= $tag['id'] ?>"><i class="fa-regular fa-trash-can" style="color: #ff0000;"></i></a></td>
+                <td><?= $tag['name'] ?></td>
+
+            </tr>
+
+        <?php endforeach; ?>
+    </table>
+
+
+
+
+<?php endif; ?>
+
+<?php if(!$_SESSION['user']['isAdmin']): ?>
 <h2>Favori</h2>
 <table>
     <tr>
+
         <th>Name</th>
         <th>Distance</th>
         <th>Duration</th>
@@ -80,7 +129,7 @@
 
     <?php endforeach?>
 </table>
-
+<?php endif; ?>
 
 <h2>Profile</h2>
 <form action="/profile" method="post">

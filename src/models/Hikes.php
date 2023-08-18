@@ -78,7 +78,7 @@ class Hikes extends Database{
     }
 
     public function getHikesCreated($id){
-        return $this->prepareAll('SELECT * From Hikes
+        return $this->prepareAll('SELECT *,Hikes.id as hikeID From Hikes
             join Users U on U.id = Hikes.creator_id
             where U.id = ?',[$id]);
     }
@@ -104,5 +104,15 @@ class Hikes extends Database{
 
     }
 
-    
+    public function removeTag(int $supTag)
+    {
+        $this->prepare("DELETE FROM Tags WHERE id=? ",[$supTag]);
+    }
+
+    public function getAllTags()
+    {
+        return $this->fetchAll("SELECT * FROM Tags");
+    }
+
+
 }

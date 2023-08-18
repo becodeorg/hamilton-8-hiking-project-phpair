@@ -5,6 +5,8 @@ namespace controllers;
 use Exception;
 use models\Hikes;
 use models\Users;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
 
 class AuthController
 {
@@ -48,25 +50,39 @@ class AuthController
                     'firstname' => $firstname,
                     'lastname' => $lastname,
                     'nickname' => $nickname,
-                    'email' => $email
+                    'email' => $email,
+                    'isAdmin' => false
                 ];
 
 
-                $to = $email;
-                $subject = 'Confirmation d\'ínscription ';
-                $message = 'Vous êtes bien inscrit sur The Hike';
-                $headers = 'From: manon.vdm@hotmail.com' . "\r\n" .
-                    'Reply-To: manon.vdm@hotmail.com' . "\r\n" .
-                    'X-Mailer: PHP/' . phpversion();
-
-                mail($to, $subject, $message, $headers);
+//                    $mail = new PHPMailer(true);
+//
+//                    $mail->isSMTP();
+//                    $mail->Host = getenv('SMTP_HOST');
+//                    $mail->Port = getenv('SMTP_PORT');
+//                    $mail->SMTPAuth = true;
+//                    $mail->Username = getenv('SMTP_USERNAME');
+//                    $mail->Password = getenv('SMTP_PASSWORD');
+//                    $mail->SMTPSecure = 'tls';
+//                    // Destinataire et contenu de l'e-mail
+//                    $mail->setFrom('thehikingprojectbecode@gmail.com', 'The Hiking Project');
+//                    $mail->addAddress($email, $nickname);
+//                    $mail->Subject = 'Confirmation d\'inscription';
+//                    $mail->Body = 'Votre compte à bien été créé';
+//
+//                    try {
+//                        $mail->send();
+//                        echo 'L\'e-mail a été envoyé.';
+//                    } catch (Exception $e) {
+//                        throw new Exception('Erreur dans l\'envoie du mail : '. $e->getMessage(),$e->getCode());
+//                    }
 
 
                 header('location: /');
 
 
             } catch (Exception $e) {
-                header('location: register?m=erreur%20dans%20la%20création%20du%20compte&color=red');
+                throw new Exception($e->getMessage());
             }
 
 
@@ -102,7 +118,8 @@ class AuthController
                         'firstname' => $user['firstname'],
                         'lastname' => $user['lastname'],
                         'nickname' => $user['nickname'],
-                        'email' => $user['email']
+                        'email' => $user['email'],
+                        'isAdmin' => $user['isAdmin']
                     ];
 
                     header('location: /');
@@ -124,6 +141,23 @@ class AuthController
 
         if (!empty($_SESSION['user'])) {
             $id = $_SESSION['user']['id'];
+            $tagsIndex=$this->hikes->getListTags();
+
+            if($_SESSION['user']['isAdmin']){
+                $users = $this->User->getAll();
+                $tags = $this->hikes->getAllTags();
+
+                if(isset($_GET['supUser'])){
+                    $this->User->remove($_GET['supUser']);
+                    header('location: /profile');
+                }
+
+                if(isset($_GET['supTag'])){
+                    $this->hikes->removeTag($_GET['supTag']);
+                    header('location: /profile');
+                }
+
+            }
 
             $favHikes = $this->hikes->getFavHikes($id);
             $hikesCreated = $this->hikes->getHikesCreated($id);
