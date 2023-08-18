@@ -6,7 +6,7 @@ class Users extends Database
 {
 
     public function getAll(){
-       return $this->fetchAll('Select * FROM Users WHERE id > 1');
+       return $this->fetchAll('Select * FROM Users WHERE isAdmin = 0');
     }
 
     public function get($nickname){
@@ -23,7 +23,7 @@ class Users extends Database
     }
 
     public function add($firstname,$lastname,$nickname,$email,$passwordHash){
-        return $this->prepare('INSERT INTO Users (firstname, lastname, nickname, email,password) VALUES (?,?,?,?,?)',[$firstname, $lastname, $nickname, $email, $passwordHash]);
+        return $this->prepare('INSERT INTO Users (firstname, lastname, nickname, email,password,isAdmin) VALUES (?,?,?,?,?,?)',[$firstname, $lastname, $nickname, $email, $passwordHash,0]);
     }
 
 }

@@ -4,7 +4,7 @@
     
     <h3>See hikes per tag</h3>
 
-    <form method="POST" action="" >
+    <form method="POST" id="formTags" action="" >
 
         <select name="hikesPerTag" id="hikesPerTag">
             <?php foreach($tags as $tag):  ?>
@@ -16,6 +16,15 @@
         <input type="submit" name="submit">
 
     </form>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('hikesPerTag').addEventListener('change', function() {
+                document.getElementById('formTags').requestSubmit();
+            });
+        });
+    </script>
+
     <?php 
         header("Cache-Control: no cache");
 
