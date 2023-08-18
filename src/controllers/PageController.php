@@ -2,7 +2,6 @@
 
 namespace controllers;
 
-use models\Database;
 use Exception;
 use models\Hikes;
 
