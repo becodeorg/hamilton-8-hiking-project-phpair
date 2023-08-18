@@ -5,6 +5,8 @@ namespace controllers;
 use Exception;
 use models\Hikes;
 use models\Users;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
 
 class AuthController
 {
@@ -52,21 +54,34 @@ class AuthController
                 ];
 
 
-                $to = $email;
-                $subject = 'Confirmation d\'ínscription ';
-                $message = 'Vous êtes bien inscrit sur The Hike';
-                $headers = 'From: manon.vdm@hotmail.com' . "\r\n" .
-                    'Reply-To: manon.vdm@hotmail.com' . "\r\n" .
-                    'X-Mailer: PHP/' . phpversion();
+                    $mail = new PHPMailer(true);
 
-                mail($to, $subject, $message, $headers);
+                    $mail->isSMTP();
+                    $mail->Host = getenv('SMTP_HOST');
+                    $mail->Port = getenv('SMTP_PORT');
+                    $mail->SMTPAuth = true;
+                    $mail->Username = getenv('SMTP_USERNAME');
+                    $mail->Password = getenv('SMTP_PASSWORD');
+                    $mail->SMTPSecure = 'tls';
+                    // Destinataire et contenu de l'e-mail
+                    $mail->setFrom('thehikingprojectbecode@gmail.com', 'The Hiking Project');
+                    $mail->addAddress($email, $nickname);
+                    $mail->Subject = 'Confirmation d\'inscription';
+                    $mail->Body = 'Votre compte à bien été créé';
+
+                    try {
+                        $mail->send();
+                        echo 'L\'e-mail a été envoyé.';
+                    } catch (Exception $e) {
+                        throw new Exception('Erreur dans l\'envoie du mail : '. $e->getMessage());
+                    }
 
 
                 header('location: /');
 
 
             } catch (Exception $e) {
-                header('location: register?m=erreur%20dans%20la%20création%20du%20compte&color=red');
+                throw new Exception($e->getMessage());
             }
 
 
