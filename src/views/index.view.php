@@ -93,11 +93,12 @@
                 <td><?= $hike['nickname'] ?></td>  
 
                 <?php if (!empty($tagsIndex)):?>
-                        <?php foreach($tagsIndex as $tagIndex):?>
-                            <?php if ($hike['id']== $tagIndex["Hike"]):?>
-                                <td><?=$tagIndex['name']?></td>
-                            <?php endif ?>
-                        <?php endforeach?>
+                    <?php foreach($tagsIndex as $tagIndex):?>
+                        <?php if ($hike['id_Hike'] == $tagIndex["Hike"]):?>
+                            <td><?=$tagIndex['name']?></td>
+                        <?php endif ?>
+                    <?php endforeach?>
+
                 <?php endif?>             
 
             </tr>
