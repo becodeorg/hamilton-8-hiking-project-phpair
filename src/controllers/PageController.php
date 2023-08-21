@@ -72,21 +72,23 @@ class PageController
     public function editHike(){
         try {
             $hike = $this->hike->getHikesById([$_GET['id']]);
+            $id=$_GET['id'];
             $updated_at = date('Y-m-d');
             include 'views/inc/header.view.php';
             include 'views/editHike.view.php';
             include 'views/inc/footer.view.php';
-
-            if(!empty($_POST) && $hike['creator_id'] == $_SESSION['user']['id']
+            if($hike['creator_id'] == $_SESSION['user']['id']
             ) {
-                var_dump($_POST);
-                
-                $this->hike->editH($_POST['hikeName'],$_POST['distance'],$_POST['duration'],$_POST['elevation_gain'],$_POST['description'], $updated_at ,$hike['id']);
-            }else {
-                throw new Exception("un ou plusieurs champs sont vides", 500);
+                if($_POST['action']=='Update' && !empty($_POST) ){
+                    $this->hike->editH($_POST['hikeName'],$_POST['distance'],$_POST['duration'],$_POST['elevation_gain'],$_POST['description'], $updated_at ,$id);
+                }
+                if($_POST['action'] == 'Delete'){
+                    $this->hike->deleteH($id);
+                    throw new Exception('ERROR');
+                }
             }
-            if($hike['creator_id'] == $_SESSION['user']['id'] && $_POST['action'] == 'Delete'){
-                $this->hike->deleteH($hike['id']);
+            else {
+                throw new Exception("un ou plusieurs champs sont vides", 500);
             }
         }catch (Exception $e){
             throw new Exception($e->getMessage());

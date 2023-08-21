@@ -2,7 +2,7 @@
 
 <h2 style="color:<?= $_GET['color'] ?> "> <?= $_GET['m'] ?> </h2>
 
-<form action="/profile" method="post">
+<form action="" method="post">
 
     <div>
         <label for="hikeName">Name</label>
