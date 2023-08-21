@@ -65,7 +65,7 @@ class AuthController
 
 
             } catch (Exception $e) {
-                header('location: ');
+                header('location: /register?m=une%20erreur%20est%20survenue%20,v%C3%A9rifi%C3%A9%20que%20tout%20les%20champs%20sont%20bien%20complet%C3%A9s');
 //                throw new Exception($e->getMessage());
             }
 
@@ -115,7 +115,8 @@ class AuthController
 
 
             } catch (Exception $e) {
-                throw new Exception($e->getMessage());
+                header('location: login?m=erreur%20lors%20de%20la%20connection&color=red');
+//                throw new Exception($e->getMessage());
             }
         }
 
@@ -226,7 +227,6 @@ class AuthController
             $mail->Subject = 'Confirmation modification de l\'adresse mail';
             $mail->Body = 'Votre adresse mail a bien été modifier';
             $mail->send();
-
 
     }
 
