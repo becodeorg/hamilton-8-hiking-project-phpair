@@ -22,7 +22,7 @@ class Hikes extends Database{
     public function getListHikes(){
         return $this->fetchAll("
                 SELECT 
-                    Hikes.id,
+                    Hikes.id as id_Hike,
                     Hikes.name, 
                     Hikes.distance, 
                     Hikes.duration,
