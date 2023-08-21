@@ -21,7 +21,7 @@
             <td><?= $hike['duration'] ?></td>
             <td><?= $hike['elevation_gain'] ?></td>
 
-            <td><a href="/editHike?id=<?=$hike['id']?>">Edit</a></td>
+            <td><a href="/editHike?id=<?=$hike['hikeID']?>">Edit</a></td>
             
 
             <?php if (!empty($tagsIndex)):?>

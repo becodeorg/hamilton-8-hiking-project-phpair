@@ -46,6 +46,7 @@ class Router
                     break;
                 case "editHike":
                     $this->controller->editHike();
+                    break;
                 default:
                     $this->controller->errorPage("Page Introuvable","404");
                     break;

@@ -81,11 +81,18 @@ class PageController
             ) {
                 if($_POST['action']=='Update' && !empty($_POST) ){
                     $this->hike->editH($_POST['hikeName'],$_POST['distance'],$_POST['duration'],$_POST['elevation_gain'],$_POST['description'], $updated_at ,$id);
+                    header("location: /editHike?id=$id");
                 }
                 if($_POST['action'] == 'Delete'){
                     $this->hike->deleteH($id);
-                    throw new Exception('ERROR');
+                    header("location: /profile");
                 }
+                
+            }
+            if(empty($_GET['id'])){
+                $created=date('Y-m-d');
+                $userid=$_SESSION['user']['id'];
+                $this->hike->addHike($_POST['hikeName'],$_POST['distance'],$_POST['duration'],$_POST['elevation_gain'],$_POST['description'],$created,$created,$userid);
             }
             else {
                 throw new Exception("un ou plusieurs champs sont vides", 500);
