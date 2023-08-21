@@ -24,6 +24,10 @@
         <label for="description">Description</label>
         <input type="text" id="description" name="description" value= "<?=htmlspecialchars($hike['description'])?>"required/>
     </div>
+    
+    <!-- tags -->
+    <button type="" name="action" value="Addtag">Add tag</button>
+
     <?php if(!empty($hike)) : ?>
     <button type="submit" name="action" value="Update">Save Changes</button>
 

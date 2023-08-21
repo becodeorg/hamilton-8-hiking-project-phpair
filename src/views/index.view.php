@@ -13,7 +13,6 @@
                 </option>
             <?php endforeach?>
         </select>
-        <input type="submit" name="submit">
 
     </form>
 
