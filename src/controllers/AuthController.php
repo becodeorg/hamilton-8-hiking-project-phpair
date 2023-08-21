@@ -6,7 +6,6 @@ use Exception;
 use models\Hikes;
 use models\Users;
 use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
 
 class AuthController
 {
@@ -54,29 +53,13 @@ class AuthController
                     'isAdmin' => false
                 ];
 
+                try {
 
-//                    $mail = new PHPMailer(true);
-//
-//                    $mail->isSMTP();
-//                    $mail->Host = getenv('SMTP_HOST');
-//                    $mail->Port = getenv('SMTP_PORT');
-//                    $mail->SMTPAuth = true;
-//                    $mail->Username = getenv('SMTP_USERNAME');
-//                    $mail->Password = getenv('SMTP_PASSWORD');
-//                    $mail->SMTPSecure = 'tls';
-//                    // Destinataire et contenu de l'e-mail
-//                    $mail->setFrom('thehikingprojectbecode@gmail.com', 'The Hiking Project');
-//                    $mail->addAddress($email, $nickname);
-//                    $mail->Subject = 'Confirmation d\'inscription';
-//                    $mail->Body = 'Votre compte à bien été créé';
-//
-//                    try {
-//                        $mail->send();
-//                        echo 'L\'e-mail a été envoyé.';
-//                    } catch (Exception $e) {
-//                        throw new Exception('Erreur dans l\'envoie du mail : '. $e->getMessage(),$e->getCode());
-//                    }
+                    $this->sendMail($email,$nickname);
 
+                } catch (\PHPMailer\PHPMailer\Exception $e) {
+                    throw new Exception('Erreur dans l\'envoie du mail : '. $e->getMessage(),$e->getCode());
+                }
 
                 header('location: /');
 
@@ -171,13 +154,19 @@ class AuthController
 
 
             if(!empty($_POST) && $_POST['action'] == 'Update') {
-                if ( !empty($_POST['firstname']) && !empty($_POST['lastname']) && !empty($_POST['nickname']) && !empty($_POST['email']) && !empty($_POST['password'])) {
+                if (!empty($_POST['firstname']) && !empty($_POST['lastname']) && !empty($_POST['nickname']) && !empty($_POST['email']) && !empty($_POST['password'])) {
 
                     $passwordHash = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
-
-
                     $this->User->modify($id,$_POST['firstname'], $_POST['lastname'], $_POST['nickname'], $_POST['email'], $passwordHash);
+
+                    if($_POST['email'] != $_SESSION['user']['email']){
+                        try {
+                            $this->sendMail($_POST['email'],$_POST['nickname']);
+                        } catch (\PHPMailer\PHPMailer\Exception $e) {
+                            throw new Exception('Erreur dans l\'envoie du mail : ' . $e->getMessage(), $e->getCode());
+                        }
+                    }
 
                     $_SESSION['user'] = [
                         'id' => $id,
@@ -210,6 +199,34 @@ class AuthController
     public function logout(){
         session_destroy();
         header('Location: /');
+    }
+
+    /**
+     * @param $mailTo string mail du destianataire
+     * @param $nickname string nom du destinataire
+     * @return void
+     * @throws \PHPMailer\PHPMailer\Exception
+     */
+    public function sendMail(string $mailTo, string $nickname): void
+    {
+
+            $mail = new PHPMailer(true);
+
+            $mail->isSMTP();
+            $mail->Host = getenv('SMTP_HOST'); //smtp.gmail.com pour gmail
+            $mail->SMTPAuth = true;
+            $mail->Username = getenv('SMTP_USERNAME');// le mail qui envoie
+            $mail->Password = getenv('SMTP_PASSWORD'); // ! Pas le mdp du compte (voir config gmail).
+            $mail->Port = getenv('SMTP_PORT'); //587 pour tls
+            $mail->SMTPSecure = 'tls';
+            // Destinataire et contenu de l'e-mail
+            $mail->setFrom('thehikingprojectbecode@gmail.com', 'The Hiking Project');
+            $mail->addAddress($mailTo,$nickname);// le mail qui reçois
+            $mail->Subject = 'Confirmation modification de l\'adresse mail';
+            $mail->Body = 'Votre adresse mail a bien été modifier';
+            $mail->send();
+
+
     }
 
 }
