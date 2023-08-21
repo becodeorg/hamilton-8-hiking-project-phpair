@@ -183,12 +183,13 @@ class AuthController
                 } else {
                     throw new Exception("un ou plusieurs champs sont vides", 500);
                 }
+                header("location: /profile");
             }
             if(!empty($_POST)) {
                 if ($_POST['action'] == 'Delete') {
                    $this->User->remove($_SESSION['user']['id']);
                    $this->logout();
-                   header("location: /");
+                   header("location: /profile");
                 }
             }
 
