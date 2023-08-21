@@ -65,7 +65,8 @@ class AuthController
 
 
             } catch (Exception $e) {
-                throw new Exception($e->getMessage());
+                header('location: ');
+//                throw new Exception($e->getMessage());
             }
 
 
