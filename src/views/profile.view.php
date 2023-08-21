@@ -6,10 +6,8 @@
         <th>Distance</th>
         <th>Duration</th>
         <th>Elevation gain</th>
-        <th>Created at</th>
-        <th>Updated at</th>
-        <th>Creator</th>
-        <th>Tags</th>
+        <th>Edit</th>
+        
     </tr>
 
     <?php foreach($hikesCreated as $hike):  ?>
@@ -22,9 +20,9 @@
             <td><?= $hike['distance'] ?></td>
             <td><?= $hike['duration'] ?></td>
             <td><?= $hike['elevation_gain'] ?></td>
-            <td><?= $hike['created_at'] ?></td>
-            <td><?= $hike['updated_at'] ?></td>
-            <td><?= $hike['nickname'] ?></td>
+
+            <td><a href="/editHike?id=<?=$hike['hikeID']?>">Edit</a></td>
+            
 
             <?php if (!empty($tagsIndex)):?>
                 <?php foreach($tagsIndex as $tagIndex):?>
