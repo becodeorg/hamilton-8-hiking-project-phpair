@@ -30,7 +30,7 @@
                     <a href="./profile">Bonjour <?= $_SESSION['user']['nickname'] ?> </a>
                 </li>
                 <li>
-                    <button>Create a new Hike</button>
+                    <button><a href="editHike">Create a new Hike</a></button>
                 </li>
             <li>
                 <a href="logout">Logout</a>
