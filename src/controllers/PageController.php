@@ -17,7 +17,7 @@ class PageController
 
         try {
             $tags=$this->hike->selectAllTags();
-            
+            $tagsIndex = $this->hike->getListTags();
 
             if(isset($_POST['hikesPerTag'])){
                 $tag=$_POST['hikesPerTag'];
@@ -25,7 +25,6 @@ class PageController
             }
             else{
                 $hikes = $this->hike->getListHikes();
-                $tagsIndex=$this->hike->getListTags();
             }
             if(isset($_GET['hikeid'])){
                 $this->hike->addToFav($_GET['hikeid'], $_SESSION['user']['id']);
@@ -47,6 +46,7 @@ class PageController
 
         try {
 
+            $tagsIndex = $this->hike->getListTags();
             $hike = $this->hike->getHikesById([$_GET['id']]);
             //includes
             include 'views/inc/header.view.php';
