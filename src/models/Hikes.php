@@ -72,10 +72,10 @@ class Hikes extends Database{
     public function getFavHikes($id){
 
         return $this->prepareAll('SELECT *,Hikes.id as HikeId  From Hikes 
-                                        join UserFavHike UFH on Hikes.id = UFH.id_Hike 
-                                        join Users U on U.id = UFH.id_User
-                                        where U.id = ?',[$id]);
-    }
+            join UserFavHike UFH on Hikes.id = UFH.id_Hike 
+            join Users U on U.id = UFH.id_User
+            where U.id = ?',[$id]);
+}
 
     public function getHikesCreated($id){
         return $this->prepareAll('SELECT *,Hikes.id as hikeID From Hikes
@@ -105,8 +105,23 @@ class Hikes extends Database{
     }
 
 
-    public function editH($name,$distance,$duration,$elevation,$description,$updated, $id){
-        return $this->prepare("UPDATE Hikes SET name = ?, distance = ?, duration = ?, elevation_gain = ?,description = ?, updated_at=? WHERE id = ?;", [$name,$distance,$duration,$elevation,$description,$updated,$id]);
+    public function editH($name,$distance,$duration,$elevation,$description,$updated, $id,$tags){
+         $this->prepare("UPDATE Hikes SET name = ?, distance = ?, duration = ?, elevation_gain = ?,description = ?, updated_at=? WHERE id = ?;", [$name,$distance,$duration,$elevation,$description,$updated,$id]);
+         $allTagsHikes = $this->fetchAll("SELECT * FROM TagsHikes");
+         foreach($tags as $tag){
+            
+            $tagsId = $this->prepare("SELECT * FROM Tags WHERE name =?", [$tag]);
+            
+//ToDo: insert fail
+
+            foreach($allTagsHikes as $tagHike){
+                if($tagsId['id'] != $tagHike['id_Tag'] && $id != $tagHike['id_Hike']){
+                    $this->prepare("INSERT INTO TagsHikes(id_Tag, id_Hike) VALUES(?,?)", [$tagsId['id'], $id]);
+                }
+            }
+            
+
+        }
 
     }
     public function deleteH($hikeid){
@@ -125,6 +140,13 @@ class Hikes extends Database{
     {
         return $this->fetchAll("SELECT * FROM Tags");
     }
-
-
+    /*public function getTagByHike($idHike){
+        return $this->prepareAll("SELECT * FROM TagsHikes WHERE id_Hike=?", [$idHike]);
+    }*/
+    
+    public function getTagByHike($idHike){
+        return $this->prepareAll("SELECT * FROM TagsHikes 
+            JOIN  Tags on Tags.id=TagsHikes.id_Tag 
+            WHERE id_Hike=?", [$idHike]);
+    } 
 }
