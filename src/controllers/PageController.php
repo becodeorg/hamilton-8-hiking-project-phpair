@@ -21,7 +21,12 @@ class PageController
 
             if(isset($_POST['hikesPerTag'])){
                 $tag=$_POST['hikesPerTag'];
-                $hikes = $this->hike->getHikesByTag($tag);
+                if($_POST['hikesPerTag'] != "all"){
+                    $hikes = $this->hike->getHikesByTag($tag);
+                }else{
+                    $hikes = $this->hike->getListHikes();
+                }
+
             }
             else{
                 $hikes = $this->hike->getListHikes();
@@ -69,6 +74,21 @@ class PageController
 
     }
 
+
+    public function createTag(){
+
+        if(isset($_POST['tag'])){
+            $this->hike->addTag($_POST['tag']);
+            header("Location: /profile");
+        }
+
+        include 'views/inc/header.view.php';
+        include 'views/createTag.view.php';
+        include 'views/inc/footer.view.php';
+
+    }
+
+
     public function editHike(){
         try {
 
@@ -77,27 +97,29 @@ class PageController
             }
 
             $hike = $this->hike->getHikesById([$_GET['id']]);
-            $tags=$this->hike->selectAllTags();
-            $id=$_GET['id'];
+            $tags= $this->hike->selectAllTags();
+            $id= $_GET['id'];
 
             $tagsFromHike=$this->hike->getTagByHike($id);
 
-            var_dump($tagsFromHike);
+
             $updated_at = date('Y-m-d');
 
             include 'views/inc/header.view.php';
             include 'views/editHike.view.php';
             include 'views/inc/footer.view.php';
 
-            if($hike['creator_id'] == $_SESSION['user']['id']
-            ) {
+            if($hike['creator_id'] == $_SESSION['user']['id'])
+            {
                 if($_POST['action']=='Update' && !empty($_POST) ){
                     $this->hike->editH($_POST['hikeName'],$_POST['distance'],$_POST['duration'],$_POST['elevation_gain'],$_POST['description'], $updated_at ,$id, $_POST['tagInput']);
-                    header("location: /editHike?id=$id");
+                    header("Location: /profile");
+                    exit();
                 }
                 if($_POST['action'] == 'Delete'){
                     $this->hike->deleteH($id);
-                    header("location: /profile");
+                    header("Location: /profile");
+                    exit();
                 }
                 
             }
@@ -110,7 +132,7 @@ class PageController
                 
             
         }catch (Exception $e){
-            header('location: /editHike?m="un%20ou%20plusieurs%20champs%20sont%20vides"');
+            header('Location: /editHike?m="un%20ou%20plusieurs%20champs%20sont%20vides"');
         }
     }
 

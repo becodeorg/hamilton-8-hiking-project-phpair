@@ -65,11 +65,11 @@ class AuthController
                     throw new Exception('Erreur dans l\'envoie du mail : '. $e->getMessage(),$e->getCode());
                 }
 
-                header('location: /');
+                header('Location: /');
 
 
             } catch (Exception $e) {
-                header('location: /register?m=une%20erreur%20est%20survenue%20,v%C3%A9rifi%C3%A9%20que%20tout%20les%20champs%20sont%20bien%20complet%C3%A9s');
+                header('Location: /register?m=une%20erreur%20est%20survenue%20,v%C3%A9rifi%C3%A9%20que%20tout%20les%20champs%20sont%20bien%20complet%C3%A9s');
 //                throw new Exception($e->getMessage());
             }
 
@@ -114,16 +114,16 @@ class AuthController
                         'isAdmin' => $user['isAdmin']
                     ];
 
-                    header('location: /');
+                    header('Location: /');
 
                 } else {
                     // Gérer le cas où l'utilisateur n'est pas trouvé ou l'authentification échoue
-                    header('location: login?m=le%20compte%20n%27existe%20pas');
+                    header('Location: login?m=le%20compte%20n%27existe%20pas');
                 }
 
 
             } catch (Exception $e) {
-                header('location: login?m=erreur%20lors%20de%20la%20connection');
+                header('Location: login?m=erreur%20lors%20de%20la%20connection');
 //                throw new Exception($e->getMessage());
             }
         }
@@ -142,12 +142,12 @@ class AuthController
 
                 if(isset($_GET['supUser'])){
                     $this->User->remove($_GET['supUser']);
-                    header('location: /profile');
+                    header('Location: /profile');
                 }
 
                 if(isset($_GET['supTag'])){
                     $this->hikes->removeTag($_GET['supTag']);
-                    header('location: /profile');
+                    header('Location: /profile');
                 }
 
             }
@@ -185,19 +185,19 @@ class AuthController
                         'nickname' => $_POST['nickname'],
                         'email' => $_POST['email']
                     ];
-                    header("location: /profile");
+                    header("Location: /profile");
 
 
                 } else {
                     throw new Exception("un ou plusieurs champs sont vides", 500);
                 }
-                header("location: /profile");
+                header("Location: /profile");
             }
             if(!empty($_POST)) {
                 if ($_POST['action'] == 'Delete') {
                    $this->User->remove($_SESSION['user']['id']);
                    $this->logout();
-                   header("location: /profile");
+                   header("Location: /profile");
                 }
             }
 
