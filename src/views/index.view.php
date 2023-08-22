@@ -7,8 +7,11 @@
     <form method="POST" id="formTags" action="" >
 
         <select name="hikesPerTag" id="hikesPerTag">
+            <option value="all">
+                --- All Tags ---
+            </option>
             <?php foreach($tags as $tag):  ?>
-                <option value="<?=$tag['id']?>" <?php if($_POST['hikesPerTag'] == $tag['id']){echo("selected");}?>>
+                <option value="<?=$tag['name']?>" <?php if($_POST['hikesPerTag'] == $tag['name']){echo("selected");}?>>
                     <?=$tag['name']?>
                 </option>
             <?php endforeach?>
@@ -61,7 +64,7 @@
                             $check = false;
                             
                             foreach($favHike as $fav){
-                                if($hike['id'] == $fav['HikeId']){
+                                if($hike['id_Hike'] == $fav['HikeId']){
                                     $check = true;
                                 }
                             }
@@ -69,9 +72,9 @@
 
                             
                             <?php if($check):?>
-                                <input id='<?=$hike['id']?>' type='checkbox' onclick="location.href='/?hikeid=<?=$hike['id']?>'" checked>
+                                <input id='<?=$hike['id_Hike']?>' type='checkbox' onclick="location.href='/?hikeid=<?=$hike['id_Hike']?>'" checked>
                             <?php else :?>
-                                <input id='<?=$hike['id']?>' type='checkbox' onclick="location.href='/?hikeid=<?=$hike['id']?>'">
+                                <input id='<?=$hike['id_Hike']?>' type='checkbox' onclick="location.href='/?hikeid=<?=$hike['id_Hike']?>'">
                 
                             <?php endif ?>
 
@@ -81,7 +84,7 @@
                     </td>
                 <?php endif ?>
                 <td>
-                    <a href="/hike?id=<?php if(isset($_POST['hikesPerTag'])){echo $hike['id_Hike'];} else {echo $hike['id'];}?>">
+                    <a href="/hike?id=<?= $hike['id_Hike'];?>">
                         <?= $hike['name'] ?>
                     </a>
                 </td>

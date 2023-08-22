@@ -1,5 +1,5 @@
 
-<h2>My Hikes</h2><button>Create a new Hike</button>
+<h2>My Hikes</h2><a href="editHike">Create a new Hike</a>
 <table>
     <tr>
         <th>Name</th>
@@ -7,6 +7,7 @@
         <th>Duration</th>
         <th>Elevation gain</th>
         <th>Edit</th>
+        <th>Tags</th>
         
     </tr>
 
