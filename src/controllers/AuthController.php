@@ -3,19 +3,27 @@
 namespace controllers;
 
 use Exception;
-use models\Database;
+use models\Hikes;
+use models\Users;
+use PHPMailer\PHPMailer\PHPMailer;
 
 class AuthController
 {
 
-    private $db;
+    private Users $User;
+    private Hikes $hikes;
 
     public function __construct(){
-        $this->db = new Database();
+        $this->User = new Users();
+        $this->hikes = new Hikes();
         session_start();
     }
 
     public function register(){
+
+        if(isset($_GET['m'])){
+            $errormessage = htmlspecialchars($_GET['m']);
+        }
 
         if (empty($_POST)) {
 
@@ -38,21 +46,31 @@ class AuthController
                 $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
                 $passwordHash = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
-                $this->db->prepare("INSERT INTO Users (firstname, lastname, nickname, email,password) VALUES (?, ?, ?,?,?)", [$firstname,$lastname,$nickname, $email, $passwordHash]);
+                $this->User->add($firstname,$lastname,$nickname, $email, $passwordHash);
 
                 $_SESSION['user'] = [
-                    'id' => $this->db->lastInsertId(),
+                    'id' => $this->User->lastInsertId(),
                     'firstname' => $firstname,
                     'lastname' => $lastname,
                     'nickname' => $nickname,
-                    'email' => $email
+                    'email' => $email,
+                    'isAdmin' => false
                 ];
+
+                try {
+
+                    $this->sendMail($email,$nickname);
+
+                } catch (\PHPMailer\PHPMailer\Exception $e) {
+                    throw new Exception('Erreur dans l\'envoie du mail : '. $e->getMessage(),$e->getCode());
+                }
 
                 header('location: /');
 
 
             } catch (Exception $e) {
-                header('location: register?m=erreur%20dans%20la%20création%20du%20compte&color=red');
+                header('location: /register?m=une%20erreur%20est%20survenue%20,v%C3%A9rifi%C3%A9%20que%20tout%20les%20champs%20sont%20bien%20complet%C3%A9s');
+//                throw new Exception($e->getMessage());
             }
 
 
@@ -61,6 +79,10 @@ class AuthController
     }
 
     public function login(){
+
+        if(isset($_GET['m'])){
+            $errormessage = htmlspecialchars($_GET['m']);
+        }
 
         if (empty($_POST)) {
 
@@ -78,7 +100,7 @@ class AuthController
 
                 $nickname = htmlspecialchars($_POST['nickname']);
 
-                $user = $this->db->prepare("SELECT * FROM Users WHERE nickname = ?", [$nickname]);
+                $user = $this->User->get($nickname);
 
 
                 if (password_verify($_POST['password'], $user['password'])) {
@@ -88,19 +110,21 @@ class AuthController
                         'firstname' => $user['firstname'],
                         'lastname' => $user['lastname'],
                         'nickname' => $user['nickname'],
-                        'email' => $user['email']
+                        'email' => $user['email'],
+                        'isAdmin' => $user['isAdmin']
                     ];
 
                     header('location: /');
 
                 } else {
                     // Gérer le cas où l'utilisateur n'est pas trouvé ou l'authentification échoue
-                    header('location: login?m=le%20compte%20n%27existe%20pas&color=red');
+                    header('location: login?m=le%20compte%20n%27existe%20pas');
                 }
 
 
             } catch (Exception $e) {
-                throw new Exception($e->getMessage());
+                header('location: login?m=erreur%20lors%20de%20la%20connection');
+//                throw new Exception($e->getMessage());
             }
         }
 
@@ -109,19 +133,50 @@ class AuthController
     public function profile(){
 
         if (!empty($_SESSION['user'])) {
+            $id = $_SESSION['user']['id'];
+            $tagsIndex=$this->hikes->getListTags();
+
+            if($_SESSION['user']['isAdmin']){
+                $users = $this->User->getAll();
+                $tags = $this->hikes->getAllTags();
+
+                if(isset($_GET['supUser'])){
+                    $this->User->remove($_GET['supUser']);
+                    header('location: /profile');
+                }
+
+                if(isset($_GET['supTag'])){
+                    $this->hikes->removeTag($_GET['supTag']);
+                    header('location: /profile');
+                }
+
+            }
+
+            $favHikes = $this->hikes->getFavHikes($id);
+            $hikesCreated = $this->hikes->getHikesCreated($id);
+            $hikes = $this->hikes->getListHikes();
+            $tagsIndex = $this->hikes->getListTags();
 
             include 'views/inc/header.view.php';
             include 'views/profile.view.php';
             include 'views/inc/footer.view.php';
 
+
+
             if(!empty($_POST) && $_POST['action'] == 'Update') {
-                if ( !empty($_POST['firstname']) && !empty($_POST['lastname']) && !empty($_POST['nickname']) && !empty($_POST['email']) && !empty($_POST['password'])) {
+                if (!empty($_POST['firstname']) && !empty($_POST['lastname']) && !empty($_POST['nickname']) && !empty($_POST['email']) && !empty($_POST['password'])) {
 
                     $passwordHash = password_hash($_POST['password'], PASSWORD_DEFAULT);
-                    $id = $_SESSION['user']['id'];
 
+                    $this->User->modify($id,$_POST['firstname'], $_POST['lastname'], $_POST['nickname'], $_POST['email'], $passwordHash);
 
-                    $this->db->prepare("UPDATE Users SET firstname = ?, lastname = ?, nickname = ?, email = ?,password = ? WHERE id = ?;", [$_POST['firstname'], $_POST['lastname'], $_POST['nickname'], $_POST['email'], $passwordHash, $id]);
+                    if($_POST['email'] != $_SESSION['user']['email']){
+                        try {
+                            $this->sendMail($_POST['email'],$_POST['nickname']);
+                        } catch (\PHPMailer\PHPMailer\Exception $e) {
+                            throw new Exception('Erreur dans l\'envoie du mail : ' . $e->getMessage(), $e->getCode());
+                        }
+                    }
 
                     $_SESSION['user'] = [
                         'id' => $id,
@@ -136,14 +191,13 @@ class AuthController
                 } else {
                     throw new Exception("un ou plusieurs champs sont vides", 500);
                 }
+                header("location: /profile");
             }
-
-
             if(!empty($_POST)) {
                 if ($_POST['action'] == 'Delete') {
-                   $this->db->fetch('DELETE FROM Users WHERE id = '.$_SESSION['user']['id'].' ;');
+                   $this->User->remove($_SESSION['user']['id']);
                    $this->logout();
-                    header("location: /");
+                   header("location: /profile");
                 }
             }
 
@@ -156,6 +210,33 @@ class AuthController
     public function logout(){
         session_destroy();
         header('Location: /');
+    }
+
+    /**
+     * @param $mailTo string mail du destianataire
+     * @param $nickname string nom du destinataire
+     * @return void
+     * @throws \PHPMailer\PHPMailer\Exception
+     */
+    public function sendMail(string $mailTo, string $nickname): void
+    {
+
+            $mail = new PHPMailer(true);
+
+            $mail->isSMTP();
+            $mail->Host = getenv('SMTP_HOST'); //smtp.gmail.com pour gmail
+            $mail->SMTPAuth = true;
+            $mail->Username = getenv('SMTP_USERNAME');// le mail qui envoie
+            $mail->Password = getenv('SMTP_PASSWORD'); // ! Pas le mdp du compte (voir config gmail).
+            $mail->Port = getenv('SMTP_PORT'); //587 pour tls
+            $mail->SMTPSecure = 'tls';
+            // Destinataire et contenu de l'e-mail
+            $mail->setFrom('thehikingprojectbecode@gmail.com', 'The Hiking Project');
+            $mail->addAddress($mailTo,$nickname);// le mail qui reçois
+            $mail->Subject = 'Confirmation modification de l\'adresse mail';
+            $mail->Body = 'Votre adresse mail a bien été modifier';
+            $mail->send();
+
     }
 
 }

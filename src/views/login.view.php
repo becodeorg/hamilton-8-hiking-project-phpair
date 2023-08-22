@@ -1,6 +1,5 @@
 <h1>Login</h1>
-<h2 style="color:<?= $_GET['color'] ?> "> <?= $_GET['m'] ?> </h2>
-<h2>Salut <?= $_SESSION['user']['nickname'] ?> !</h2>
+<h2 style="color: red "> <?= $errormessage ?></h2>
 <form action="#" method="post">
     <div>
         <label for="nickname">nickname</label>
