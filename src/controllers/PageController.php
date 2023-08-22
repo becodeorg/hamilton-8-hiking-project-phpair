@@ -77,27 +77,29 @@ class PageController
             }
 
             $hike = $this->hike->getHikesById([$_GET['id']]);
-            $tags=$this->hike->selectAllTags();
-            $id=$_GET['id'];
+            $tags= $this->hike->selectAllTags();
+            $id= $_GET['id'];
 
             $tagsFromHike=$this->hike->getTagByHike($id);
 
-            var_dump($tagsFromHike);
+
             $updated_at = date('Y-m-d');
 
             include 'views/inc/header.view.php';
             include 'views/editHike.view.php';
             include 'views/inc/footer.view.php';
 
-            if($hike['creator_id'] == $_SESSION['user']['id']
-            ) {
+            if($hike['creator_id'] == $_SESSION['user']['id'])
+            {
                 if($_POST['action']=='Update' && !empty($_POST) ){
                     $this->hike->editH($_POST['hikeName'],$_POST['distance'],$_POST['duration'],$_POST['elevation_gain'],$_POST['description'], $updated_at ,$id, $_POST['tagInput']);
-                    header("location: /editHike?id=$id");
+                    header("location: /profile");
+                    exit();
                 }
                 if($_POST['action'] == 'Delete'){
                     $this->hike->deleteH($id);
                     header("location: /profile");
+                    exit();
                 }
                 
             }

@@ -107,21 +107,26 @@ class Hikes extends Database{
 
     public function editH($name,$distance,$duration,$elevation,$description,$updated, $id,$tags){
          $this->prepare("UPDATE Hikes SET name = ?, distance = ?, duration = ?, elevation_gain = ?,description = ?, updated_at=? WHERE id = ?;", [$name,$distance,$duration,$elevation,$description,$updated,$id]);
-         $allTagsHikes = $this->fetchAll("SELECT * FROM TagsHikes");
-         foreach($tags as $tag){
-            
-            $tagsId = $this->prepare("SELECT * FROM Tags WHERE name =?", [$tag]);
-            
-//ToDo: insert fail
+         //ToDo: insert tagsHikes
 
-            foreach($allTagsHikes as $tagHike){
-                if($tagsId['id'] != $tagHike['id_Tag'] && $id != $tagHike['id_Hike']){
-                    $this->prepare("INSERT INTO TagsHikes(id_Tag, id_Hike) VALUES(?,?)", [$tagsId['id'], $id]);
-                }
-            }
-            
-
+        //tableau nom hikes => tableau id hikes :
+        $tagsId = [];
+        foreach ($tags as $tag){
+            $tagsId[] = $this->prepare("Select id from Tags where name = ?", [$tag])["id"];
         }
+
+        //supprimer les anciens tags en bd :
+
+        $this->prepare("DELETE FROM TagsHikes WHERE id_Hike = ?",[$id]);
+
+        // ajouter a TagsHikes
+
+        foreach ($tagsId as $idTag){ // parcourir les tags a ajouter
+            $this->prepare("Insert into TagsHikes VALUES (?,?)", [$idTag, $id]); // ajouter la relation
+        }
+
+
+
 
     }
     public function deleteH($hikeid){

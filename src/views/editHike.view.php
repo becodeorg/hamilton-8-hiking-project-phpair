@@ -16,11 +16,11 @@
     </div>
     <div>
         <label for="elevation_gain">Elevation Gain</label>
-        <input type="text" id="elevation_gain" name="elevation_gain" value= "<?=htmlspecialchars($hike['elevation_gain'])?>"required/>
+        <input type="text" id="elevation_gain" name="elevation_gain" value= "<?=htmlspecialchars($hike['elevation_gain'])?>" required/>
     </div>
     <div>
         <label for="description">Description</label>
-        <input type="text" id="description" name="description" value= "<?=htmlspecialchars($hike['description'])?>"required/>
+        <input type="text" id="description" name="description" value= "<?=htmlspecialchars($hike['description'])?>" required/>
     </div>
 
     <div>
@@ -41,7 +41,7 @@
     
 
     <label >Add a tag</label>
-    <div id="containerTag"><input id="inputId" list="tagList" name="tagInput[]" /></div>
+    <div id="containerTag"><input id="inputId" list="tagList" name="tagInput[]"  /></div>
 
     <datalist id="tagList">
         <?php foreach($tags as $tag):  ?>
@@ -56,8 +56,7 @@
     document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('addTag').addEventListener('click', function(){
            let input =document.getElementById('inputId').cloneNode();
-           input.value= "";
-           let insert = document.getElementById('containerTag').appendChild(input);
+           document.getElementById('containerTag').appendChild(input);
         });
     });
     
