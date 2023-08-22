@@ -79,7 +79,7 @@ class PageController
 
         if(isset($_POST['tag'])){
             $this->hike->addTag($_POST['tag']);
-            header("location: /profile");
+            header("Location: /profile");
         }
 
         include 'views/inc/header.view.php';
@@ -113,12 +113,12 @@ class PageController
             {
                 if($_POST['action']=='Update' && !empty($_POST) ){
                     $this->hike->editH($_POST['hikeName'],$_POST['distance'],$_POST['duration'],$_POST['elevation_gain'],$_POST['description'], $updated_at ,$id, $_POST['tagInput']);
-                    header("location: /profile");
+                    header("Location: /profile");
                     exit();
                 }
                 if($_POST['action'] == 'Delete'){
                     $this->hike->deleteH($id);
-                    header("location: /profile");
+                    header("Location: /profile");
                     exit();
                 }
                 
@@ -132,7 +132,7 @@ class PageController
                 
             
         }catch (Exception $e){
-            header('location: /editHike?m="un%20ou%20plusieurs%20champs%20sont%20vides"');
+            header('Location: /editHike?m="un%20ou%20plusieurs%20champs%20sont%20vides"');
         }
     }
 
