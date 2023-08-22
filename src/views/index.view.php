@@ -81,7 +81,7 @@
                     </td>
                 <?php endif ?>
                 <td>
-                    <a href="/hike?id=<?php if(isset($_POST['hikesPerTag'])){echo $hike['id_Hike'];} else {echo $hike['id'];}?>">
+                    <a href="/hike?id=<?= $hike['id_Hike'];?>">
                         <?= $hike['name'] ?>
                     </a>
                 </td>
