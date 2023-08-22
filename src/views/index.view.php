@@ -61,7 +61,7 @@
                             $check = false;
                             
                             foreach($favHike as $fav){
-                                if($hike['id'] == $fav['HikeId']){
+                                if($hike['id_Hike'] == $fav['HikeId']){
                                     $check = true;
                                 }
                             }
@@ -69,9 +69,9 @@
 
                             
                             <?php if($check):?>
-                                <input id='<?=$hike['id']?>' type='checkbox' onclick="location.href='/?hikeid=<?=$hike['id']?>'" checked>
+                                <input id='<?=$hike['id_Hike']?>' type='checkbox' onclick="location.href='/?hikeid=<?=$hike['id']?>'" checked>
                             <?php else :?>
-                                <input id='<?=$hike['id']?>' type='checkbox' onclick="location.href='/?hikeid=<?=$hike['id']?>'">
+                                <input id='<?=$hike['id_Hike']?>' type='checkbox' onclick="location.href='/?hikeid=<?=$hike['id']?>'">
                 
                             <?php endif ?>
 

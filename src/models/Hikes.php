@@ -107,7 +107,6 @@ class Hikes extends Database{
 
     public function editH($name,$distance,$duration,$elevation,$description,$updated, $id,$tags){
          $this->prepare("UPDATE Hikes SET name = ?, distance = ?, duration = ?, elevation_gain = ?,description = ?, updated_at=? WHERE id = ?;", [$name,$distance,$duration,$elevation,$description,$updated,$id]);
-         //ToDo: insert tagsHikes
 
         //tableau nom hikes => tableau id hikes :
         $tagsId = [];
@@ -125,10 +124,9 @@ class Hikes extends Database{
             $this->prepare("Insert into TagsHikes VALUES (?,?)", [$idTag, $id]); // ajouter la relation
         }
 
-
-
-
     }
+
+
     public function deleteH($hikeid){
         return $this->prepare("DELETE FROM Hikes WHERE id =  ?",[$hikeid]);
     }
