@@ -41,6 +41,9 @@ class Router
                 case "error":
                     $this->controller->errorPage("error","500");
                     break;
+                case "createTag":
+                    $this->controller->createTag();
+                    break;
                 case "profile":
                     $this->Auth->profile();
                     break;
