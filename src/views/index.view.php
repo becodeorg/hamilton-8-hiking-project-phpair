@@ -69,9 +69,9 @@
 
                             
                             <?php if($check):?>
-                                <input id='<?=$hike['id_Hike']?>' type='checkbox' onclick="location.href='/?hikeid=<?=$hike['id']?>'" checked>
+                                <input id='<?=$hike['id_Hike']?>' type='checkbox' onclick="location.href='/?hikeid=<?=$hike['id_Hike']?>'" checked>
                             <?php else :?>
-                                <input id='<?=$hike['id_Hike']?>' type='checkbox' onclick="location.href='/?hikeid=<?=$hike['id']?>'">
+                                <input id='<?=$hike['id_Hike']?>' type='checkbox' onclick="location.href='/?hikeid=<?=$hike['id_Hike']?>'">
                 
                             <?php endif ?>
 
