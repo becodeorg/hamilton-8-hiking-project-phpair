@@ -8,7 +8,7 @@
 
         <select name="hikesPerTag" id="hikesPerTag">
             <option value="all">
-                ---Select a Tag---
+                --- All Tags ---
             </option>
             <?php foreach($tags as $tag):  ?>
                 <option value="<?=$tag['name']?>" <?php if($_POST['hikesPerTag'] == $tag['name']){echo("selected");}?>>
