@@ -7,8 +7,11 @@
     <form method="POST" id="formTags" action="" >
 
         <select name="hikesPerTag" id="hikesPerTag">
+            <option value="all">
+                ---Select a Tag---
+            </option>
             <?php foreach($tags as $tag):  ?>
-                <option value="<?=$tag['id']?>" <?php if($_POST['hikesPerTag'] == $tag['id']){echo("selected");}?>>
+                <option value="<?=$tag['name']?>" <?php if($_POST['hikesPerTag'] == $tag['name']){echo("selected");}?>>
                     <?=$tag['name']?>
                 </option>
             <?php endforeach?>

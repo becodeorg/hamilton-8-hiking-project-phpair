@@ -21,7 +21,12 @@ class PageController
 
             if(isset($_POST['hikesPerTag'])){
                 $tag=$_POST['hikesPerTag'];
-                $hikes = $this->hike->getHikesByTag($tag);
+                if($_POST['hikesPerTag'] != "all"){
+                    $hikes = $this->hike->getHikesByTag($tag);
+                }else{
+                    $hikes = $this->hike->getListHikes();
+                }
+
             }
             else{
                 $hikes = $this->hike->getListHikes();
@@ -68,6 +73,21 @@ class PageController
 
 
     }
+
+
+    public function createTag(){
+
+        if(isset($_POST['tag'])){
+            $this->hike->addTag($_POST['tag']);
+            header("location: /profile");
+        }
+
+        include 'views/inc/header.view.php';
+        include 'views/createTag.view.php';
+        include 'views/inc/footer.view.php';
+
+    }
+
 
     public function editHike(){
         try {

@@ -17,7 +17,7 @@ class Hikes extends Database{
                     
                 JOIN TagsHikes ON Hikes.id = TagsHikes.id_Hike
                 JOIN Tags ON Tags.id = TagsHikes.id_Tag
-                WHERE Tags.id = ?", [$tag]);
+                WHERE Tags.name like ?", [$tag]);
     }
     public function getListHikes(){
         return $this->fetchAll("
@@ -151,5 +151,10 @@ class Hikes extends Database{
         return $this->prepareAll("SELECT * FROM TagsHikes 
             JOIN  Tags on Tags.id=TagsHikes.id_Tag 
             WHERE id_Hike=?", [$idHike]);
-    } 
+    }
+
+    public function addTag(mixed $tag)
+    {
+        $this->prepare("INSERT INTO Tags(name) VALUES (?)",[$tag]);
+    }
 }
