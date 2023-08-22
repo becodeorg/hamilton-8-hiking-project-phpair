@@ -21,6 +21,10 @@ class AuthController
 
     public function register(){
 
+        if(isset($_GET['m'])){
+            $errormessage = htmlspecialchars($_GET['m']);
+        }
+
         if (empty($_POST)) {
 
             include 'views/inc/header.view.php';
@@ -76,6 +80,10 @@ class AuthController
 
     public function login(){
 
+        if(isset($_GET['m'])){
+            $errormessage = htmlspecialchars($_GET['m']);
+        }
+
         if (empty($_POST)) {
 
             include 'views/inc/header.view.php';
@@ -110,12 +118,12 @@ class AuthController
 
                 } else {
                     // Gérer le cas où l'utilisateur n'est pas trouvé ou l'authentification échoue
-                    header('location: login?m=le%20compte%20n%27existe%20pas&color=red');
+                    header('location: login?m=le%20compte%20n%27existe%20pas');
                 }
 
 
             } catch (Exception $e) {
-                header('location: login?m=erreur%20lors%20de%20la%20connection&color=red');
+                header('location: login?m=erreur%20lors%20de%20la%20connection');
 //                throw new Exception($e->getMessage());
             }
         }

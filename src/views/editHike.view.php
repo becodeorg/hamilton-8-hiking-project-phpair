@@ -1,6 +1,5 @@
 <h1></h1>
-
-<h2 style="color:red"> <?= $_GET['m'] ?> </h2>
+<h2 style="color:red"> <?= $errormessage ?> </h2>
 
 <form action="" method="post">
     <div>

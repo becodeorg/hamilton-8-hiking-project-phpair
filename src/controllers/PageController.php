@@ -71,6 +71,11 @@ class PageController
 
     public function editHike(){
         try {
+
+            if(isset($_GET['m'])){
+                $errormessage = htmlspecialchars($_GET['m']);
+            }
+
             $hike = $this->hike->getHikesById([$_GET['id']]);
             $tags=$this->hike->selectAllTags();
             $id=$_GET['id'];
