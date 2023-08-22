@@ -92,22 +92,26 @@ class PageController
     public function editHike(){
         try {
 
+            $updated_at = date('Y-m-d');
+
             if(isset($_GET['m'])){
                 $errormessage = htmlspecialchars($_GET['m']);
             }
 
-            $hike = $this->hike->getHikesById([$_GET['id']]);
-            $tags= $this->hike->selectAllTags();
-            $id= $_GET['id'];
+            if(isset($_GET['id'])) {
+                $hike = $this->hike->getHikesById([$_GET['id']]);
+                $id = $_GET['id'];
+                $tagsFromHike = $this->hike->getTagByHike($id);
 
-            $tagsFromHike=$this->hike->getTagByHike($id);
+            }
 
-
-            $updated_at = date('Y-m-d');
+            $tags = $this->hike->selectAllTags();
 
             include 'views/inc/header.view.php';
             include 'views/editHike.view.php';
             include 'views/inc/footer.view.php';
+
+
 
             if($hike['creator_id'] == $_SESSION['user']['id'])
             {
@@ -123,10 +127,13 @@ class PageController
                 }
                 
             }
-            if(empty($_GET['id'])){
+            if($_POST['action'] == 'Create'){
                 $created=date('Y-m-d');
                 $userid=$_SESSION['user']['id'];
                 $this->hike->addHike($_POST['hikeName'],$_POST['distance'],$_POST['duration'],$_POST['elevation_gain'],$_POST['description'],$created,$created,$userid);
+                $this->hike->editH($_POST['hikeName'],$_POST['distance'],$_POST['duration'],$_POST['elevation_gain'],$_POST['description'], $updated_at ,$this->hike->lastInsertId(), $_POST['tagInput']);
+                header("Location: /profile");
+                exit();
             }
                 //throw new Exception("un ou plusieurs champs sont vides", 500);
                 
