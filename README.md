@@ -13,7 +13,3 @@ Projet PHP réalisé dans le cadre de la formation BeCode.
 
 [Nathan Lombardelli](https://github.com/NathanLombardelli) <br>
 [Manon Van de Merckt](https://github.com/Manon98446)
-
-## Link
-
-Liens vers la [page](url)
